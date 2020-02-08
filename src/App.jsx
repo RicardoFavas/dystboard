@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Menu, Dropdown, Icon, Button,DatePicker,Input, Select, Radio, Form, Row, Col } from 'antd';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import {Menu, Dropdown, Icon, Button,DatePicker,Input, Select, Radio, Form, Row, Col} from 'antd';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -20,7 +20,7 @@ class App extends React.Component {
       chartData: []
     }
   }
-
+  
   onMethodChange(value){
     this.setState({method:value.target.value})
     this.queueRefresh()
