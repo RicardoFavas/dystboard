@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import {Menu, Dropdown, Icon, Button, DatePicker, Input, Select, Form, Row, Col} from 'antd';
+import {DatePicker, Input, Form, Row, Col} from 'antd';
 import TSChart from './components/TSChart';
 import MethodSelect from './components/MethodSelect';
 import * as Constants from './Constants';
