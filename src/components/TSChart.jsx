@@ -1,5 +1,5 @@
 import React from 'react';
-import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from 'recharts';
 
 class TSChart extends React.Component {
   constructor(props) {
@@ -10,9 +10,10 @@ class TSChart extends React.Component {
     return (
       <LineChart width={800} height={350} data={this.props.data}>
         <Line type="monotone" dataKey={this.props.value} stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" />
+        <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
         <XAxis dataKey={this.props.label} />
         <YAxis />
+        <Tooltip/>
       </LineChart>
     );
   }
