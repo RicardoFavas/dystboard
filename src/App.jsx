@@ -13,12 +13,13 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.state = { 
-      method: GET_DIVIDENDS,
+      method: GET_CLOSE_PRICE,
       ticker: 'AAPL',
       start_date: moment("2019-01-01"), 
-      end_date: moment("2019-01-31"),
+      end_date: moment("2019-12-31"),
       chartData: []
     }
+    this.queueRefresh()
   }
   
   onMethodChange(value){
@@ -55,7 +56,7 @@ class App extends React.Component {
       const response = await fetch(`/${method}/${ticker}?start-date=${start_date}&end-date=${end_date}`)
       const result = await response.json()
 
-      const chartData = _.map(result, (value,label) => ({label:label.split('T')[0],value}))
+      const chartData = _.map(result, (value,label) => ({label:label.split('T')[0],value})).sort((a,b)=> a.label > b.label)
       console.log(chartData)
       this.setState({chartData})
     }
@@ -64,13 +65,13 @@ class App extends React.Component {
   render() {
     const buttons = (
       <Radio.Group value={this.state.method} onChange={this.onMethodChange.bind(this)}>
-        <Radio.Button value={GET_DIVIDENDS}>{GET_DIVIDENDS}</Radio.Button>
-        <Radio.Button value={GET_CLOSE_PRICE}>{GET_CLOSE_PRICE}</Radio.Button>
-        <Radio.Button value={GET_RECOMENDATIONS}>{GET_RECOMENDATIONS}</Radio.Button>
+        <Radio.Button value={GET_DIVIDENDS}>Dividends</Radio.Button>
+        <Radio.Button value={GET_CLOSE_PRICE}>Close Prices</Radio.Button>
+        <Radio.Button value={GET_RECOMENDATIONS}>Recomendations</Radio.Button>
       </Radio.Group>
     )
     const renderLineChart = (
-      <LineChart width={600} height={300} data={this.state.chartData}>
+      <LineChart width={800} height={350} data={this.state.chartData}>
         <Line type="monotone" dataKey="value" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="label" />
@@ -79,19 +80,31 @@ class App extends React.Component {
     )
     return (
       <div className="App">
-        {buttons}
-        <Form>
-          <Form.Item label="Ticker">
-            <Input value={this.state.ticker} placeholder={'Ticker'} onChange={this.onTickerChange.bind(this)} onPressEnter={this.onTickerOnPressEnter.bind(this)}/>
-          </Form.Item>
-          <Form.Item label="start_date">
-              <DatePicker defaultValue={this.state.start_date} placeholder={"Start date"} onChange={this.onStartDateChange.bind(this)}/>
-          </Form.Item>
-          <Form.Item label="end_date">
-              <DatePicker defaultValue={this.state.end_date} placeholder={"End date"} onChange={this.onEndDateChange.bind(this)}/>
-          </Form.Item>
-        </Form>
-        {renderLineChart}
+        <Row type="flex" justify="center">
+          {buttons}
+        </Row>
+        <Row type="flex" justify="center">
+          <Form>
+            <Col span={8}>
+              <Form.Item label="Ticker">
+                <Input value={this.state.ticker} placeholder={'Ticker'} onChange={this.onTickerChange.bind(this)} onPressEnter={this.onTickerOnPressEnter.bind(this)}/>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="Start">
+                  <DatePicker defaultValue={this.state.start_date} placeholder={"Start date"} onChange={this.onStartDateChange.bind(this)}/>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="End">
+                  <DatePicker defaultValue={this.state.end_date} placeholder={"End date"} onChange={this.onEndDateChange.bind(this)}/>
+              </Form.Item>
+            </Col>
+          </Form>
+        </Row>
+        <Row type="flex" justify="center">
+          {renderLineChart}
+        </Row>
       </div>
     );
   }
